@@ -14,7 +14,7 @@ const shopRouter = require('./controllers/Shop');
 
 app.use( '/', bodyParser.urlencoded({extended: true}) );
 
-mongoose.connect('mongodb://localhost/app');
+mongoose.connect('mongodb://127.0.0.1/app');
 
 app.use('/', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
