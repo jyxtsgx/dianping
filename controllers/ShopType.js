@@ -115,12 +115,22 @@ router.post('/edit', function(req, res) {
 
 /*
 * 删除
+*   parmas:
+*    id : 要删除的商户类型的ID
 * */
 router.all('/delete', function(req, res) {
-    let id = req.query.id || req.body.id;
+    let id = (req.query.id || req.body.id || '').split(',');
 
-    ShopTypeModel.deleteOne({
-        _id: id
+    if (!id.length) {
+        res.json({
+            code: -1,
+            message: '请传入ID'
+        });
+        return;
+    }
+
+    ShopTypeModel.deleteMany({
+        _id: {$in: id}
     }).then(function(result) {
         res.json({
             code: 0,
