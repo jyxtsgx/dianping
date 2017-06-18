@@ -31,29 +31,37 @@ router.post('/add', function (req, res) {
 
     ShopTypeModel.findOne({
         name: name
-    }).exec(function (err, shopTypeInfo) {
-        if (!err) {
-            if (shopTypeInfo) {
-                res.json({
-                    code: 2,
-                    message: '添加失败 - 已经存在该分类了'
-                });
-            } else {
-                let shopType = new ShopTypeModel({name: name});
-                shopType.save(function (err) {
-                    if (err) {
-                        res.json({
-                            code: 3,
-                            message: '添加失败'
-                        });
-                    } else {
-                        res.json({
-                            code: 0,
-                            message: '添加成功'
-                        });
-                    }
-                });
-            }
+    })
+    .then(function(shopTypeInfo) {
+        if (shopTypeInfo) {
+            return Promise.reject({
+                code: 2,
+                message: '添加失败 - 已经存在该分类了'
+            });
+        } else {
+            let shopType = new ShopTypeModel({
+                name
+            });
+            return shopType.save();
+        }
+    })
+    .then(function(newShopType) {
+        if (!newShopType) {
+            return Promise.reject({
+                code: 3,
+                message: '添加失败'
+            });
+        }
+        res.json(newShopType);
+    })
+    .catch(function(err) {
+        if (err && err.code) {
+            res.json(err);
+        } else {
+            res.json({
+                code: -1,
+                message: '未知错误'
+            });
         }
     });
 });
@@ -121,9 +129,9 @@ router.post('/edit', function(req, res) {
 router.all('/delete', function(req, res) {
     let id = (req.query.id || req.body.id || '').split(',');
 
-    if (!id.length) {
+    if (!id || !id[0]) {
         res.json({
-            code: -1,
+            code: 1,
             message: '请传入ID'
         });
         return;
@@ -132,15 +140,25 @@ router.all('/delete', function(req, res) {
     ShopTypeModel.deleteMany({
         _id: {$in: id}
     }).then(function(result) {
-        res.json({
-            code: 0,
-            message: '删除成功'
-        })
+        if (result.deletedCount) {
+            return Promise.reject({
+                code: 2,
+                message: '删除失败，没有删除任何数据'
+            });
+        } else {
+            res.json({
+                deletedCount: deletedCount
+            })
+        };
     }).catch(function(err) {
-        res.json({
-            code: 1,
-            message: '删除失败'
-        });
+        if (err && err.code) {
+            res.json(err);
+        } else {
+            res.json({
+                code: -1,
+                message: '未知错误'
+            });
+        }
     });
 });
 

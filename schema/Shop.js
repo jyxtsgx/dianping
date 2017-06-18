@@ -5,7 +5,7 @@ const ShopShema = new Schema({
     // 商家名称
     name: String,
     // 商家头图
-    pic: String
+    pic: String,
     // 商家类型
     type: {
         type: Schema.Types.ObjectId,
@@ -16,9 +16,7 @@ const ShopShema = new Schema({
     // 商家电话
     phone: String,
     // 商家简介
-    description: String,
-    // 商家评价
-    evaluation:
+    description: String
 });
 
-module.exports = mongoose.model('ShopSchema', ShopShema);
+module.exports = mongoose.model('Shop', ShopShema);
