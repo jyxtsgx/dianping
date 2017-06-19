@@ -16,7 +16,11 @@ const ShopShema = new Schema({
     // 商家电话
     phone: String,
     // 商家简介
-    description: String
+    description: String,
+    gallery: {
+        type: Array,
+        default: []
+    }
 });
 
 module.exports = mongoose.model('Shop', ShopShema);
