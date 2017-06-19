@@ -138,7 +138,8 @@ router.all('/delete', function(req, res) {
 
     ShopModel.deleteMany({
         _id: {$in: id}
-    }).then(function(result) {
+    })
+    .then(function(result) {
         if (!result.deletedCount) {
             return Promise.reject({
                 code: 2,
@@ -149,7 +150,8 @@ router.all('/delete', function(req, res) {
                 deletedCount: result.deletedCount
             })
         };
-    }).catch(function(err) {
+    })
+    .catch(function(err) {
         if (err && err.code) {
             res.json(err);
         } else {

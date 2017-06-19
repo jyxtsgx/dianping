@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const ShopTypeModel = require('../schema/ShopType');
+const ShopModel = require('../schema/Shop');
 
 /*
 * 获取所有商户类型列表
@@ -137,9 +138,22 @@ router.all('/delete', function(req, res) {
         return;
     }
 
-    ShopTypeModel.deleteMany({
-        _id: {$in: id}
-    }).then(function(result) {
+    ShopModel.find({
+        type: {$in: id}
+    })
+    .then(function(result) {
+        if (result.length) {
+            return Promise.reject({
+                code: 3,
+                message: '有商家使用了该类型，不能删除'
+            });
+        } else {
+            return ShopTypeModel.deleteMany({
+                _id: {$in: id}
+            });
+        }
+    })
+    .then(function(result) {
         if (!result.deletedCount) {
             return Promise.reject({
                 code: 2,
@@ -150,7 +164,8 @@ router.all('/delete', function(req, res) {
                 deletedCount: result.deletedCount
             });
         };
-    }).catch(function(err) {
+    })
+    .catch(function(err) {
         if (err && err.code) {
             res.json(err);
         } else {

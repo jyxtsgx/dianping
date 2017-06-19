@@ -5,8 +5,8 @@ const GoodsSchema = new Schema({
 
     // 商品名称
     name: String
-    // 商家ID
-    shopId: {
+    // 商家
+    shop: {
         type: Schema.Types.ObjectId,
         ref: 'Shop'
     }
