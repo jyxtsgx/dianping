@@ -140,7 +140,7 @@ router.all('/delete', function(req, res) {
     ShopTypeModel.deleteMany({
         _id: {$in: id}
     }).then(function(result) {
-        if (result.deletedCount) {
+        if (!result.deletedCount) {
             return Promise.reject({
                 code: 2,
                 message: '删除失败，没有删除任何数据'
