@@ -145,8 +145,7 @@ router.all('/delete', function(req, res) {
             });
         } else {
             res.json({
-                code: 0,
-                message: '删除成功'
+                deletedCount: result.deletedCount
             })
         };
     }).catch(function(err) {

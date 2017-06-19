@@ -147,8 +147,8 @@ router.all('/delete', function(req, res) {
             });
         } else {
             res.json({
-                deletedCount: deletedCount
-            })
+                deletedCount: result.deletedCount
+            });
         };
     }).catch(function(err) {
         if (err && err.code) {
