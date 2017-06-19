@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const upload = require('../tools/Upload');
 
 const ShopModel = require('../schema/Shop');
 const ShopTypeModel = require('../schema/ShopType');
@@ -160,5 +161,18 @@ router.all('/delete', function(req, res) {
     });
 });
 
+/**
+ * 商家头图上传
+ */
+router.post('/pic', upload.single('file'), (req, res) => {
+    if (req.file) {
+        res.json(req.file);
+    } else {
+        res.json({
+            code: 1,
+            message: '上传失败'
+        });
+    }
+});
 
 module.exports = router;
