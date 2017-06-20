@@ -12,6 +12,8 @@ const mongoose = require('mongoose');
 const shopTypeRouter = require('./controllers/ShopType');
 const shopRouter = require('./controllers/Shop');
 
+app.use('/public', express.static('./public'));
+
 app.use( bodyParser.urlencoded({extended: true}) );
 
 mongoose.connect('mongodb://127.0.0.1/app');

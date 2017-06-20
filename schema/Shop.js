@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 const ShopShema = new Schema({
     // 商家名称
     name: String,
-    // 商家头图
-    pic: String,
+    // 商家封面
+    cover: String,
     // 商家类型
     type: {
         type: Schema.Types.ObjectId,

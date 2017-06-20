@@ -61,7 +61,7 @@
     - return : Array
         - _id : 商户ID
         - name : 商户名称
-        - pic : 商家头图
+        - cover : 商家头图
         - type :
             - _id : 类型ID
             - name : 商家类型名称
@@ -86,7 +86,7 @@
         - 成功 : (返回添加后的数据)
             - _id : 商户ID
             - name : 商户名称
-            - pic : 商家头图
+            - cover : 商家头图
             - type : 商户类型ID
             - phone : 商户电话
             - address : 商户地址
@@ -110,7 +110,7 @@
         - 成功 : (返回修改后的数据)
             - _id : 商户ID
             - name : 商户名称
-            - pic : 商家头图
+            - cover : 商家头图
             - type : 商户类型ID
             - phone : 商户电话
             - address : 商户地址
@@ -127,3 +127,23 @@
             2 : 删除失败，没有删除任何数据
         - 成功 : (返回删除后的数据条数)
             - deletedCount : 删除后的数据条数
+
+- 上传封面
+    - url : /admin/shop/cover
+    - method : post
+    - params :
+        - id : 商户ID
+        - cover : 要上传的图片
+    - return :
+        - 失败：
+            1 : 商家不存在
+            2 : 上传失败
+            3 : 上传成功，但是更新数据失败了
+        - 成功 : 返回上传封面的商家信息
+            - _id : 商户ID
+            - name : 商户名称
+            - cover : 商家头图
+            - type : 商户类型ID
+            - phone : 商户电话
+            - address : 商户地址
+            - description : 商户简介

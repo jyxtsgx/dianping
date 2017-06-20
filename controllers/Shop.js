@@ -166,7 +166,7 @@ router.all('/delete', function(req, res) {
 /**
  * 商家头图上传
  */
-router.post('/pic', upload.single('pic'), (req, res) => {
+router.post('/cover', upload.single('cover'), (req, res) => {
     let id = (req.body.id || '').trim();
 
     ShopModel.findById(id)
@@ -183,7 +183,7 @@ router.post('/pic', upload.single('pic'), (req, res) => {
                 message: '上传失败'
             });
         }
-        shop.pic = req.file.path;
+        shop.cover = req.file.path;
         return shop.save();
     })
     .then((newShop) => {
