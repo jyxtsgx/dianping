@@ -1,6 +1,6 @@
 # dianping
 
-### API
+## API
 
 **商户类型**
 
