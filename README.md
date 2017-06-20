@@ -1,17 +1,15 @@
-# dianping
+# API
 
-## API
+### 商户类型
 
-**商户类型**
-
-- 获取
+- **获取**
     - url : /admin/shoptype
     - method : get/post
     - return :
         - _id : 商户类型ID
         - name : 商户类型名称
 
-- 添加
+- **添加**
     - url : /admin/shoptype/add
     - method : post
     - params :
@@ -25,7 +23,7 @@
             - _id : 商户类型ID
             - name : 商户类型名称
 
-- 编辑
+- **编辑**
     - url : /admin/shoptype/edit
     - method : post
     - params :
@@ -40,7 +38,7 @@
             - _id : 商户类型ID
             - name : 商户类型名称
 
-- 删除
+- **删除**
     - url : /admin/shoptype/delete
     - method : get/post
     - params :
@@ -53,9 +51,9 @@
             - deletedCount : 删除后的数据条数
 
 
-**商户**
+### 商户
 
-- 获取
+- **获取
     - url : /admin/shop
     - method : get/post
     - return : Array
@@ -69,7 +67,7 @@
         - address : 商户地址
         - description : 商户简介
 
-- 添加
+- **添加**
     - url : /admin/shop/add
     - method : post
     - params :
@@ -92,7 +90,7 @@
             - address : 商户地址
             - description : 商户简介
 
-- 编辑
+- **编辑**
     - url : /admin/shop/edit
     - method : post
     - params :
@@ -116,7 +114,7 @@
             - address : 商户地址
             - description : 商户简介
 
-- 删除
+- **删除**
     - url : /admin/shop/delete
     - method : get/post
     - params :
@@ -128,7 +126,7 @@
         - 成功 : (返回删除后的数据条数)
             - deletedCount : 删除后的数据条数
 
-- 上传封面
+- **上传封面**
     - url : /admin/shop/cover
     - method : post
     - params :
@@ -148,9 +146,9 @@
             - address : 商户地址
             - description : 商户简介
 
-**商品**
+### 商品
 
-- 获取
+- **获取**
     - url : /admin/goods
     - method : get/post
     - return : Array
@@ -165,7 +163,7 @@
             - url : 图片URL
             - cover : 是否为封面
 
-- 添加
+- **添加**
     - url : /admin/goods/add
     - method : post
     - params :
@@ -186,7 +184,7 @@
                 - url : 图片URL
                 - cover : 是否为封面
 
-- 编辑
+- **编辑**
     - url : /admin/goods/edit
     - method : post
     - params :
@@ -208,7 +206,7 @@
                 - url : 图片URL
                 - cover : 是否为封面
 
-- 删除
+- **删除**
     - url : /admin/goods/delete
     - method : get/post
     - params :
