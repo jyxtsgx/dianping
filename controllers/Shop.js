@@ -167,14 +167,44 @@ router.all('/delete', function(req, res) {
  * 商家头图上传
  */
 router.post('/pic', upload.single('file'), (req, res) => {
-    if (req.file) {
-        res.json(req.file);
-    } else {
-        res.json({
-            code: 1,
-            message: '上传失败'
-        });
-    }
+    let id = (req.body.id || '').trim();
+
+    ShopModel.findById(id)
+    .then((shop) => {
+        if (!shop) {
+            return Promise.reject({
+                code: 1,
+                message: '商家不存在'
+            });
+        }
+        if (!req.file) {
+            return Promise.reject({
+                code: 2,
+                message: '上传失败'
+            });
+        }
+        shop.pic = req.file.path;
+        return shop.save();
+    })
+    .then((newShop) => {
+        if (!newShop) {
+            return Promise.reject({
+                code: 3,
+                message: '上传成功，但是更新数据失败了'
+            })
+        }
+        res.json(newShop);
+    })
+    .catch((err) => {
+        if (err && err.code) {
+            res.json(err);
+        } else {
+            res.json({
+                code: -1,
+                message: '未知错误'
+            })
+        }
+    });
 });
 
 module.exports = router;
