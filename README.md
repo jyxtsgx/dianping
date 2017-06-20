@@ -53,7 +53,7 @@
 
 ### 商户
 
-- **获取
+- **获取**
     - url : /admin/shop
     - method : get/post
     - return : Array
