@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const upload = require('../tools/Upload');
+const upload = require('../tools/Upload')({savePath: 'shop'});
 
 const ShopModel = require('../schema/Shop');
 const ShopTypeModel = require('../schema/ShopType');
@@ -166,7 +166,7 @@ router.all('/delete', function(req, res) {
 /**
  * 商家头图上传
  */
-router.post('/pic', upload.single('file'), (req, res) => {
+router.post('/pic', upload.single('pic'), (req, res) => {
     let id = (req.body.id || '').trim();
 
     ShopModel.findById(id)
