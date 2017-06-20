@@ -11,6 +11,7 @@ const mongoose = require('mongoose');
 
 const shopTypeRouter = require('./controllers/ShopType');
 const shopRouter = require('./controllers/Shop');
+const goodsRouter = require('./controllers/Goods');
 
 app.use('/public', express.static('./public'));
 
@@ -25,6 +26,7 @@ app.use('/', function (req, res, next) {
 
 app.use('/admin/shoptype', shopTypeRouter);
 app.use('/admin/shop', shopRouter);
+app.use('/admin/goods', goodsRouter);
 
 app.listen(8888, function () {
     console.log('服务器启动成功');

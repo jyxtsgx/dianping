@@ -4,6 +4,7 @@ const upload = require('../tools/Upload')({savePath: 'shop'});
 
 const ShopModel = require('../schema/Shop');
 const ShopTypeModel = require('../schema/ShopType');
+const GoodsModel = require('../schema/Goods');
 
 /*
  * 商家列表
@@ -136,8 +137,20 @@ router.all('/delete', function(req, res) {
         return;
     }
 
-    ShopModel.deleteMany({
-        _id: {$in: id}
+    GoodsModel.find({
+        shop: {$in: id}
+    })
+    .then(function(result) {
+        if (result.length) {
+            return Promise.reject({
+                code: 3,
+                message: '该商家下还有商品存在，不能删除'
+            });
+        } else {
+            return ShopModel.deleteMany({
+                _id: {$in: id}
+            });
+        }
     })
     .then(function(result) {
         if (!result.deletedCount) {

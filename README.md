@@ -147,3 +147,75 @@
             - phone : 商户电话
             - address : 商户地址
             - description : 商户简介
+
+**商品**
+
+- 获取
+    - url : /admin/goods
+    - method : get/post
+    - return : Array
+        - _id : 商品ID
+        - name : 商品名称
+        - shop :
+            - _id : 商家ID
+            - name : 商家名称
+        - gallery: Array
+            - _id : 图片ID
+            - name : 图片名称
+            - url : 图片URL
+            - cover : 是否为封面
+
+- 添加
+    - url : /admin/goods/add
+    - method : post
+    - params :
+        - name : 商品名称（必传）
+        - shop : 商品所属商家ID（必传）
+    - return :
+        - 失败 :
+            1 : 商品名称或商家不能为空
+            2 : 不存在的商家
+            3 : 添加失败
+        - 成功 : (返回添加后的数据)
+            - _id : 商品ID
+            - name : 商品名称
+            - shop : 商品所属商家
+            - gallery: Array
+                - _id : 图片ID
+                - name : 图片名称
+                - url : 图片URL
+                - cover : 是否为封面
+
+- 编辑
+    - url : /admin/goods/edit
+    - method : post
+    - params :
+        - _id : 商品ID（必传）
+        - name : 商品名称（必传）
+        - shop : 商品所属商家ID（必传）
+    - return :
+        - 失败 :
+            1 : 商品名称或商家不能为空
+            2 : 指定商品不存在
+            3 : 更新失败
+        - 成功 : (返回修改后的数据)
+            - _id : 商品ID
+            - name : 商品名称
+            - shop : 商品所属商家
+            - gallery: Array
+                - _id : 图片ID
+                - name : 图片名称
+                - url : 图片URL
+                - cover : 是否为封面
+
+- 删除
+    - url : /admin/goods/delete
+    - method : get/post
+    - params :
+        - id : 要删除的id（必传），支持批量删除，多个id之间使用英文半角逗号分隔
+    - return :
+        - 失败 :
+            1 : 请传入ID
+            2 : 删除失败，没有删除任何数据
+        - 成功 : (返回删除后的数据条数)
+            - deletedCount : 删除后的数据条数
