@@ -4,6 +4,8 @@ const router = express.Router();
 const ShopModel = require('../schema/Shop');
 const GoodsModel = require('../schema/Goods');
 
+const upload = require('../tools/Upload')({savePath: 'goods'});
+
 /**
  * 商品列表
  */
@@ -150,6 +152,50 @@ router.all('/delete', (req, res) => {
                 code: -1,
                 message: '未知错误'
             });
+        }
+    });
+});
+
+/**
+ * 商品封面上传
+ */
+router.post('/cover', upload.single('cover'), (req, res) => {
+    let id = (req.body.id || '').trim();
+
+    GoodsModel.findById(id)
+    .then( goods => {
+        if (!goods) {
+            return Promise.reject({
+                code: 1,
+                message: '商品不存在'
+            });
+        }
+        if (!req.file) {
+            return Promise.reject({
+                code: 2,
+                message: '上传失败'
+            });
+        }
+        goods.cover = req.file.path;
+        return goods.save();
+    })
+    .then( newGoods => {
+        if (!newGoods) {
+            return Promise.reject({
+                code: 3,
+                message: '上传成功，但是更新数据失败了'
+            })
+        }
+        res.json(newGoods);
+    })
+    .catch((err) => {
+        if (err && err.code) {
+            res.json(err);
+        } else {
+            res.json({
+                code: -1,
+                message: '未知错误'
+            })
         }
     });
 });

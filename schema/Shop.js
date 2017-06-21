@@ -17,6 +17,7 @@ const ShopShema = new Schema({
     phone: String,
     // 商家简介
     description: String,
+    // 图库
     gallery: {
         type: Array,
         default: []

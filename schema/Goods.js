@@ -10,10 +10,8 @@ const GoodsSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Shop'
     },
-    gallery: {
-        type: Array,
-        default: []
-    }
+    // 封面
+    cover: String
 
 });
 
