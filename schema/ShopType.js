@@ -3,10 +3,10 @@
  * E-mail: zmouse@miaov.com
  * GitHub: zmouse@github.com
  */
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-var ShopTypeSchema = new Schema({
+const ShopTypeSchema = new Schema({
     name: String
 });
 

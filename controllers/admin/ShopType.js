@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const ShopTypeModel = require('../schema/ShopType');
-const ShopModel = require('../schema/Shop');
+const ShopTypeModel = require('../../schema/ShopType');
+const ShopModel = require('../../schema/Shop');
 
 /*
 * 获取所有商户类型列表

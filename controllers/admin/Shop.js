@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const upload = require('../tools/Upload')({savePath: 'shop'});
+const upload = require('../../tools/Upload')({savePath: 'shop'});
 
-const ShopModel = require('../schema/Shop');
-const ShopTypeModel = require('../schema/ShopType');
+const ShopModel = require('../../schema/Shop');
+const ShopTypeModel = require('../../schema/ShopType');
 
 /*
  * 商家列表

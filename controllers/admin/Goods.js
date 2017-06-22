@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const ShopModel = require('../schema/Shop');
-const GoodsModel = require('../schema/Goods');
+const ShopModel = require('../../schema/Shop');
+const GoodsModel = require('../../schema/Goods');
 
-const upload = require('../tools/Upload')({savePath: 'goods'});
+const upload = require('../../tools/Upload')({savePath: 'goods'});
 
 /**
  * 商品列表
