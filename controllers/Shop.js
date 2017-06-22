@@ -177,7 +177,6 @@ router.post('/cover', upload.single('cover'), (req, res) => {
                 message: '商家不存在'
             });
         }
-        console.log(req.file);
         if (!req.file) {
             return Promise.reject({
                 code: 2,
@@ -207,5 +206,103 @@ router.post('/cover', upload.single('cover'), (req, res) => {
         }
     });
 });
+
+/**
+ * 商家图库
+ */
+router.post('/gallery', upload.single('pic'), (req, res) => {
+    let id = (req.body.id || '').trim();
+    let description = (req.body.description || '').trim();
+
+    ShopModel.findById(id)
+    .then((shop) => {
+        if (!shop) {
+            return Promise.reject({
+                code: 1,
+                message: '商家不存在'
+            });
+        }
+        if (!req.file) {
+            return Promise.reject({
+                code: 2,
+                message: '上传失败'
+            });
+        }
+        // console.log(req.file);
+        shop.gallery.push({
+            path: req.file.path,
+            description: description
+        });
+        return shop.save();
+    })
+    .then((newShop) => {
+        if (!newShop) {
+            return Promise.reject({
+                code: 3,
+                message: '上传成功，但是更新数据失败了'
+            })
+        }
+        res.json(newShop);
+    })
+    .catch((err) => {
+        if (err && err.code) {
+            res.json(err);
+        } else {
+            res.json({
+                code: -1,
+                message: '未知错误'
+            })
+        }
+    });
+});
+
+/**
+ * 商家图库-删除
+ */
+router.all('/gallery/delete', (req, res) => {
+    let id = (req.query.id || req.body.id || '');
+    let gid = (req.query.gid || req.body.gid || '').split(',').map(item => parseInt(item));
+
+    if (!id || !id[0]) {
+        res.json({
+            code: 1,
+            message: '请传入商户ID'
+        });
+        return;
+    }
+
+    ShopModel.findById(id)
+    .then( shop => {
+        if (!shop) {
+            return Promise.reject({
+                code: 2,
+                message: '不存在该商家信息'
+            });
+        }
+        shop.gallery = shop.gallery.filter( (item, index) => {
+            return !gid.includes(index);
+        } );
+        return shop.save();
+    } )
+    .then( newShop => {
+        if (!newShop) {
+            return Promise.reject({
+                code: 3,
+                message: '删除失败'
+            });
+        }
+        res.json(newShop);
+    } )
+    .catch((err) => {
+        if (err && err.code) {
+            res.json(err);
+        } else {
+            res.json({
+                code: -1,
+                message: '未知错误'
+            })
+        }
+    });
+})
 
 module.exports = router;

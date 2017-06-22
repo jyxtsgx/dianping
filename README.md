@@ -89,6 +89,7 @@
             - phone : 商户电话
             - address : 商户地址
             - description : 商户简介
+            - gallery : 相册
 
 - **编辑**
     - url : /admin/shop/edit
@@ -113,6 +114,7 @@
             - phone : 商户电话
             - address : 商户地址
             - description : 商户简介
+            - gallery : 相册
 
 - **删除**
     - url : /admin/shop/delete
@@ -145,6 +147,50 @@
             - phone : 商户电话
             - address : 商户地址
             - description : 商户简介
+            - gallery : 相册
+
+- **商家相册上传**
+    - url : /admin/shop/gallery
+    - method : post
+    - params :
+        - id : 商户ID
+        - description : 图片简介
+        - pic : 要上传的图片
+    - return :
+        - 失败：
+            1 : 商家不存在
+            2 : 上传失败
+            3 : 上传成功，但是更新数据失败了
+        - 成功 : 返回上传封面的商家信息
+            - _id : 商户ID
+            - name : 商户名称
+            - cover : 商家头图
+            - type : 商户类型ID
+            - phone : 商户电话
+            - address : 商户地址
+            - description : 商户简介
+            - gallery : 相册
+
+- **商家相册删除**
+    - url : /admin/shop/gallery/delete
+    - method : get/post
+    - params :
+        - id : 商户ID
+        - gid : 要删除的图片index，多个index可以使用逗号分隔
+    - return :
+        - 失败：
+            1 : 请传入商户ID
+            2 : 不存在该商家信息
+            3 : 删除失败
+        - 成功 : 返回上传封面的商家信息
+            - _id : 商户ID
+            - name : 商户名称
+            - cover : 商家头图
+            - type : 商户类型ID
+            - phone : 商户电话
+            - address : 商户地址
+            - description : 商户简介
+            - gallery : 相册
 
 ### 商品
 
@@ -178,11 +224,7 @@
             - _id : 商品ID
             - name : 商品名称
             - shop : 商品所属商家
-            - gallery: Array
-                - _id : 图片ID
-                - name : 图片名称
-                - url : 图片URL
-                - cover : 是否为封面
+            - cover : 封面
 
 - **编辑**
     - url : /admin/goods/edit
@@ -200,11 +242,7 @@
             - _id : 商品ID
             - name : 商品名称
             - shop : 商品所属商家
-            - gallery: Array
-                - _id : 图片ID
-                - name : 图片名称
-                - url : 图片URL
-                - cover : 是否为封面
+            - cover : 封面
 
 - **删除**
     - url : /admin/goods/delete
