@@ -227,8 +227,8 @@
     - method : post
     - params :
         - id : 商户ID
-        - description : 图片简介
-        - pic : 要上传的图片
+        - description : 图片简介，一张图片对应一个简介，简介字段的命名使用description[0]，description[1]，description[2]的格式
+        - pic : 要上传的图片，可以选择上传多张，名字统一使用pic
     - return :
         - 失败：
             - 1 : 商家不存在

@@ -210,9 +210,10 @@ router.post('/cover', upload.single('cover'), (req, res) => {
 /**
  * 商家图库
  */
-router.post('/gallery', upload.single('pic'), (req, res) => {
+router.post('/gallery', upload.array('pic', 10), (req, res) => {
+
     let id = (req.body.id || '').trim();
-    let description = (req.body.description || '').trim();
+    let description = Array.isArray(req.body.description) ? req.body.description : [];
 
     ShopModel.findById(id)
     .then((shop) => {
@@ -222,17 +223,18 @@ router.post('/gallery', upload.single('pic'), (req, res) => {
                 message: '商家不存在'
             });
         }
-        if (!req.file) {
+        if (!req.files.length) {
             return Promise.reject({
                 code: 2,
                 message: '上传失败'
             });
         }
-        // console.log(req.file);
-        shop.gallery.push({
-            path: req.file.path,
-            description: description
-        });
+        req.files.forEach( (file, index) => {
+             shop.gallery.push({
+                 path: file.path,
+                 description: description[index] || ''
+             });
+         });
         return shop.save();
     })
     .then((newShop) => {
@@ -244,7 +246,7 @@ router.post('/gallery', upload.single('pic'), (req, res) => {
         }
         res.json(newShop);
     })
-    .catch((err) => {
+    .catch(err => {
         if (err && err.code) {
             res.json(err);
         } else {
