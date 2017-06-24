@@ -44,7 +44,7 @@
 
 - **退出**
 
-- url : /api/user/login
+- url : /api/user/logout
 - method : get/post
 - return :
     - 失败 :
