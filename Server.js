@@ -10,7 +10,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 
-const userRouter = require('./controllers/User');
+const userRouter = require('./controllers/api/User');
 
 const shopTypeRouter = require('./controllers/admin/ShopType');
 const shopRouter = require('./controllers/admin/Shop');
@@ -25,6 +25,7 @@ mongoose.connect('mongodb://127.0.0.1/app');
 
 app.use('/', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Credentials', 'true');
     next();
 });
 
@@ -36,7 +37,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/user', userRouter);
+app.use('/api/user', userRouter);
 
 app.use('/admin/shoptype', shopTypeRouter);
 app.use('/admin/shop', shopRouter);

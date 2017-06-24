@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const upload = require('../tools/Upload')({savePath: 'user'});
+const upload = require('../../tools/Upload')({savePath: 'user'});
 
-const UserModel = require('../schema/User');
+const UserModel = require('../../schema/User');
 
 /**
  * 注册
