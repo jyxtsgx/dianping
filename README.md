@@ -6,7 +6,7 @@
 
 - **注册**
 
-- url : /user/reg
+- url : /api/user/reg
 - method : post
 - params :
     - username : 要注册的用户名（必传，3-20个字符之间）
@@ -27,7 +27,7 @@
 
 - **登录**
 
-- url : /user/login
+- url : /api/user/login
 - method : post
 - params :
     - username : 要注册的用户名（必传，3-20个字符之间）
@@ -44,7 +44,7 @@
 
 - **退出**
 
-- url : /user/login
+- url : /api/user/login
 - method : get/post
 - return :
     - 失败 :
@@ -56,7 +56,7 @@
 
 - **上传用户头像**
 
-- url : /user/avatar
+- url : /api/user/avatar
 - method : post
 - params :
     - avatar : 要上传的图片
