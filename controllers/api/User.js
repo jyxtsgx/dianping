@@ -212,5 +212,20 @@ router.post('/avatar', upload.single('avatar'), (req, res) => {
     });
 });
 
+/**
+ * 获取用户资料
+ */
+router.all('/profile', (req, res) => {
+
+});
+
+/**
+ * 修改用户资料
+ */
+router.post('/profile/edit', (req, res) => {
+
+});
+
+
 
 module.exports = router;
