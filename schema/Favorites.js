@@ -1,9 +1,13 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Scheme = mongoose.Schema;
 
-const EvaluationShema = new Schema({
+/**
+ * 评论
+ * @type {Schema}
+ */
+const FavoritesSchema = new Schema({
     // 商家ID
-    shopId: {
+    shop: {
         type: Schema.Types.ObjectId,
         ref: 'Shop'
     }，
@@ -17,4 +21,4 @@ const EvaluationShema = new Schema({
     }
 });
 
-module.exports = mongoose.model('EvaluationShema', EvaluationShema);
+module.exprots = mongoose.Model('Favorites', FavoritesSchema);

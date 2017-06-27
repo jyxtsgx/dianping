@@ -4,6 +4,7 @@ const router = express.Router();
 const upload = require('../../tools/Upload')({savePath: 'user'});
 
 const UserModel = require('../../schema/User');
+const ProfileModel = require('../../schema/Profile');
 
 /**
  * 注册
@@ -66,6 +67,7 @@ router.post('/reg', (req, res) => {
                 message: '注册失败'
             });
         }
+
         res.cookie('userinfo', JSON.stringify({
             _id: newUser._id,
             username: newUser.username
@@ -216,14 +218,101 @@ router.post('/avatar', upload.single('avatar'), (req, res) => {
  * 获取用户资料
  */
 router.all('/profile', (req, res) => {
+    let uid = (req.body.uid || req.query.uid ||'').trim();
 
+    if (!uid) {
+        res.json({
+            code: 1,
+            message: '缺少uid参数'
+        });
+        return;
+    }
+
+    ProfileModel.findOne({
+        user: uid
+    })
+    .then( profile => {
+        if (!profile) {
+            return Promise.reject({
+                code: 2,
+                message: '不存在该用户信息'
+            });
+        }
+        res.json(profile);
+    } )
+    .catch((err) => {
+        if (err && err.code) {
+            res.json(err);
+        } else {
+            res.json({
+                code: -1,
+                message: err
+            })
+        }
+    });
 });
 
 /**
  * 修改用户资料
  */
 router.post('/profile/edit', (req, res) => {
+    let uid = (req.body.uid || '').trim();
+    let gender = (req.body.gender || '').trim();
+    let birthday = (req.body.birthday || '').trim();
+    let shippingAddress = (req.body.shippingAddress || '').trim();
 
+    if (!'男,女,保密'.split(',').includes(gender)) {
+        gender = '保密';
+    }
+
+    if (birthday) {
+        birthday = new Date(...birthday.split('-'));
+        if (birthday == 'Invalid Date') {
+            res.json({
+                code: 1,
+                message: '无效的生日日期格式'
+            });
+            return;
+        }
+    }
+
+    ProfileModel.findOne({
+        user: uid
+    })
+    .then( profile => {
+        if (!profile) {
+            profile = new ProfileModel({
+                user: uid,
+                gender,
+                birthday,
+                shippingAddress
+            });
+        } else {
+            profile.gender = gender;
+            profile.birthday = birthday;
+            profile.shippingAddress = shippingAddress;
+        }
+        return profile.save();
+    } )
+    .then( newProfile => {
+        if (!newProfile) {
+            return Promise.reject({
+                code: 2,
+                message: '修改失败'
+            });
+        }
+        res.json(newProfile);
+    } )
+    .catch((err) => {
+        if (err && err.code) {
+            res.json(err);
+        } else {
+            res.json({
+                code: -1,
+                message: '未知错误'
+            })
+        }
+    });
 });
 
 

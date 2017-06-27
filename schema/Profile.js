@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const ProfileShema = new Schema({
     // 用户ID
-    type: {
+    user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
@@ -11,7 +11,7 @@ const ProfileShema = new Schema({
         type: String,
         default: '保密'
     },
-    birthday: Date,
+    birthday: String,
     shippingAddress: String
 });
 

@@ -11,6 +11,8 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 
 const userRouter = require('./controllers/api/User');
+const ShopTypeRouter = require('./controllers/api/ShopType');
+const ShopRouter = require('./controllers/api/Shop');
 
 const shopTypeRouter = require('./controllers/admin/ShopType');
 const shopRouter = require('./controllers/admin/Shop');
@@ -38,6 +40,8 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/user', userRouter);
+app.use('/api/shoptype', shopTypeRouter);
+app.use('/api/shop', ShopRouter);
 
 app.use('/admin/shoptype', shopTypeRouter);
 app.use('/admin/shop', shopRouter);

@@ -1,11 +1,16 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const EvaluationShema = new Schema({
-    // 商家ID
-    shopId: {
+/**
+ * 推荐
+ * @type {Schema}
+ */
+const RecommendSchema = new Schema({
+
+    // 商品
+    goods: {
         type: Schema.Types.ObjectId,
-        ref: 'Shop'
+        ref: 'Goods'
     }，
     user: {
         type: Schema.Types.ObjectId,
@@ -15,6 +20,7 @@ const EvaluationShema = new Schema({
         type: Date,
         default: Date.now()
     }
+
 });
 
-module.exports = mongoose.model('EvaluationShema', EvaluationShema);
+module.exports = mongoose.model('Recommend', RecommendSchema);
