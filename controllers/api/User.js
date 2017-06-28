@@ -333,10 +333,9 @@ router.post('/profile/edit', (req, res) => {
         user: req.userInfo._id
     })
     .then( profile => {
-        console.log(profile);
         if (!profile) {
             profile = new ProfileModel({
-                user: uid,
+                user: eq.userInfo._id,
                 gender,
                 birthday,
                 shippingAddress
