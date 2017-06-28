@@ -164,7 +164,7 @@ router.all('/logout', (req, res) => {
 /**
  * 用户头像上传
  */
-router.post('/avatar', upload.single('avatar'), (req, res) => {
+router.post('/avatar/upload', upload.single('avatar'), (req, res) => {
 
     if (!req.userInfo._id) {
         res.json({
@@ -215,10 +215,52 @@ router.post('/avatar', upload.single('avatar'), (req, res) => {
 });
 
 /**
+ * 获取用户头像
+ * @type {[type]}
+ */
+router.all('/avatar', (req, res) => {
+    if (!req.userInfo._id) {
+        res.json({
+            code: 10,
+            message: '你还没有登录'
+        });
+        return;
+    }
+    UserModel.findById(req.userInfo._id)
+    .then( user => {
+        if (!user) {
+            return Promise.reject({
+                code: 1,
+                message: '不存在该用户'
+            });
+        }
+        if (user.avatar) {
+            res.json({
+                avatar: user.avatar
+            })
+        } else {
+            res.json({
+                avatar: '/public/images/avatar.jpg'
+            })
+        }
+
+    } )
+    .catch((err) => {
+        if (err && err.code) {
+            res.json(err);
+        } else {
+            res.json({
+                code: -1,
+                message: '未知错误'
+            })
+        }
+    });
+});
+
+/**
  * 获取用户资料
  */
 router.all('/profile', (req, res) => {
-    let uid = (req.body.uid || req.query.uid ||'').trim();
 
     if (!req.userInfo._id) {
         res.json({
@@ -228,21 +270,13 @@ router.all('/profile', (req, res) => {
         return;
     }
 
-    if (!uid) {
-        res.json({
-            code: 1,
-            message: '缺少uid参数'
-        });
-        return;
-    }
-
     ProfileModel.findOne({
-        user: uid
+        user: req.userInfo._id
     })
     .then( profile => {
         if (!profile) {
             return Promise.reject({
-                code: 2,
+                code: 1,
                 message: '不存在该用户信息'
             });
         }
@@ -264,15 +298,14 @@ router.all('/profile', (req, res) => {
  * 修改用户资料
  */
 router.post('/profile/edit', (req, res) => {
-    let uid = (req.body.uid || '').trim();
     let gender = (req.body.gender || '').trim();
     let birthday = (req.body.birthday || '').trim();
     let shippingAddress = (req.body.shippingAddress || '').trim();
 
-    if (!uid) {
+    if (!req.userInfo._id) {
         res.json({
-            code: 1,
-            message: '缺少uid参数'
+            code: 10,
+            message: '你还没有登录'
         });
         return;
     }
@@ -285,7 +318,7 @@ router.post('/profile/edit', (req, res) => {
         birthday = new Date(...birthday.split('-'));
         if (birthday == 'Invalid Date') {
             res.json({
-                code: 2,
+                code: 1,
                 message: '无效的生日日期格式'
             });
             return;
@@ -293,7 +326,7 @@ router.post('/profile/edit', (req, res) => {
     }
 
     ProfileModel.findOne({
-        user: uid
+        user: req.userInfo._id
     })
     .then( profile => {
         if (!profile) {
@@ -313,7 +346,7 @@ router.post('/profile/edit', (req, res) => {
     .then( newProfile => {
         if (!newProfile) {
             return Promise.reject({
-                code: 3,
+                code: 2,
                 message: '修改失败'
             });
         }
