@@ -220,6 +220,14 @@ router.post('/avatar', upload.single('avatar'), (req, res) => {
 router.all('/profile', (req, res) => {
     let uid = (req.body.uid || req.query.uid ||'').trim();
 
+    if (!req.userInfo._id) {
+        res.json({
+            code: 10,
+            message: '你还没有登录'
+        });
+        return;
+    }
+
     if (!uid) {
         res.json({
             code: 1,
@@ -261,6 +269,14 @@ router.post('/profile/edit', (req, res) => {
     let birthday = (req.body.birthday || '').trim();
     let shippingAddress = (req.body.shippingAddress || '').trim();
 
+    if (!uid) {
+        res.json({
+            code: 1,
+            message: '缺少uid参数'
+        });
+        return;
+    }
+
     if (!'男,女,保密'.split(',').includes(gender)) {
         gender = '保密';
     }
@@ -269,7 +285,7 @@ router.post('/profile/edit', (req, res) => {
         birthday = new Date(...birthday.split('-'));
         if (birthday == 'Invalid Date') {
             res.json({
-                code: 1,
+                code: 2,
                 message: '无效的生日日期格式'
             });
             return;
@@ -297,7 +313,7 @@ router.post('/profile/edit', (req, res) => {
     .then( newProfile => {
         if (!newProfile) {
             return Promise.reject({
-                code: 2,
+                code: 3,
                 message: '修改失败'
             });
         }
