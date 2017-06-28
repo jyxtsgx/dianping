@@ -363,7 +363,7 @@ router.post('/profile/edit', (req, res) => {
         } else {
             res.json({
                 code: -1,
-                message: err
+                message: JSON.stringify(err)
             })
         }
     });
