@@ -15,6 +15,21 @@ const CommentSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
+    content: {
+        type: String,
+        default: ''
+    },
+    score: {
+        type: Object,
+        default: {
+            // 口味
+            taste: 0,
+            // 环境
+            environment: 0,
+            // 服务
+            service: 0
+        }
+    },
     datetime: {
         type: Date,
         default: Date.now()

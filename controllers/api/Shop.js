@@ -100,6 +100,7 @@ router.all('/favorites', (req, res) => {
             code: 1,
             message: '请传入要收藏的商家ID'
         });
+        return;
     }
 
     FavoritesModel.findOne({
