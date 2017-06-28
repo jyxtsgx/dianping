@@ -108,7 +108,8 @@ router.post('/login', (req, res) => {
 
     UserModel.findOne({
         username: username
-    }).then( user => {
+    })
+    .then( user => {
         if (!user) {
             return Promise.reject({
                 code: 1,
@@ -121,6 +122,7 @@ router.post('/login', (req, res) => {
                 message: '密码不正确'
             })
         }
+
         res.cookie('userinfo', JSON.stringify({
             _id: user._id,
             username: user.username
@@ -129,7 +131,7 @@ router.post('/login', (req, res) => {
         res.json({
             _id: user._id,
             username: user.username,
-            avatar: newUser.avatar || '/public/images/avatar.jpg'
+            avatar: user.avatar || '/public/images/avatar.jpg'
         });
     } )
     .catch(function(err) {
@@ -138,7 +140,7 @@ router.post('/login', (req, res) => {
         } else {
             res.json({
                 code: -1,
-                message: '未知错误'
+                message: err
             });
         }
     });
