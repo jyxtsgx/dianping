@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Scheme = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 /**
  * 评论
@@ -21,4 +21,4 @@ const CommentSchema = new Schema({
     }
 });
 
-module.exprots = mongoose.Model('Comment', CommentSchema);
+module.exprots = mongoose.model('Comment', CommentSchema);

@@ -113,11 +113,11 @@ router.all('/favorites', (req, res) => {
                 message: '你已经收藏过该商家了'
             });
         }
-        let favorites = new FavoritesModel({
+        let newFavorites = new FavoritesModel({
             shop: id,
             user: req.userInfo._id
         });
-        return favorites.save();
+        return newFavorites.save();
     } )
     .then( favorites => {
         if (!favorites) {

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Scheme = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 /**
  * 评论
@@ -10,7 +10,7 @@ const FavoritesSchema = new Schema({
     shop: {
         type: Schema.Types.ObjectId,
         ref: 'Shop'
-    }，
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -21,4 +21,4 @@ const FavoritesSchema = new Schema({
     }
 });
 
-module.exprots = mongoose.Model('Favorites', FavoritesSchema);
+module.exprots = mongoose.model('Favorites', FavoritesSchema);
