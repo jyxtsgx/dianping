@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const ShopModel = require('../../schema/Shop');
+const FavoritesModel = require('../../schema/Favorites');
 
 /**
  * 获取指定商家的信息
@@ -77,6 +78,129 @@ router.all('/list', (req, res) => {
         });
     })
 
+});
+
+/**
+ * 收藏
+ * @type {[type]}
+ */
+router.all('/favorites', (req, res) => {
+    let id = Number(req.query.id || req.body.id);
+
+    if (!req.userInfo._id) {
+        res.json({
+            code: 10,
+            message: '你还没有登录'
+        });
+        return;
+    }
+
+    if (!id) {
+        res.json({
+            code: 1,
+            message: '请传入要收藏的商家ID'
+        });
+    }
+
+    FavoritesModel.findOne({
+        shop: id,
+        user: req.userInfo._id
+    })
+    .then( favorites => {
+        if (favorites) {
+            return Promise.reject({
+                code: 2,
+                message: '你已经收藏过该商家了'
+            });
+        }
+        let favorites = new FavoritesModel({
+            shop: id,
+            user: req.userInfo._id
+        });
+        return favorites.save();
+    } )
+    .then( favorites => {
+        if (!favorites) {
+            return Promise.reject({
+                code: 3,
+                message: '收藏失败'
+            })
+        }
+        res.json(favorites);
+    } )
+    .catch(function(err) {
+        if (err && err.code) {
+            res.json(err);
+        } else {
+            res.json({
+                code: -1,
+                message: '未知错误'
+            });
+        }
+    });
+});
+
+/**
+ * 取消收藏
+ * @type {[type]}
+ */
+router.all('/favorites/remove', (req, res) => {
+    let id = Number(req.query.id || req.body.id);
+
+    if (!req.userInfo._id) {
+        res.json({
+            code: 10,
+            message: '你还没有登录'
+        });
+        return;
+    }
+
+    if (!id) {
+        res.json({
+            code: 1,
+            message: '请传入要收藏的商家ID'
+        });
+    }
+
+    FavoritesModel.findOne({
+        shop: id,
+        user: req.userInfo._id
+    })
+    .then( favorites => {
+        if (!favorites) {
+            return Promise.reject({
+                code: 2,
+                message: '你还没有收藏该商家'
+            });
+        }
+
+        return FavoritesModel.remove({
+            shop: id,
+            user: req.userInfo._id
+        });
+    } )
+    .then( result => {
+        if (!result.deletedCount) {
+            return Promise.reject({
+                code: 2,
+                message: '取消收藏失败'
+            });
+        } else {
+            res.json({
+                count: result.count
+            });
+        };
+    } )
+    .catch(function(err) {
+        if (err && err.code) {
+            res.json(err);
+        } else {
+            res.json({
+                code: -1,
+                message: '未知错误'
+            });
+        }
+    });
 });
 
 module.exports = router;
