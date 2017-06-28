@@ -6,7 +6,7 @@ const ShopTypeModel = require('../../schema/ShopType');
 /**
  * 获取商家类型
  */
-router.get('/', (req, res) => {
+router.all('/', (req, res) => {
 
     ShopTypeModel.find()
     .then( shopType => {
