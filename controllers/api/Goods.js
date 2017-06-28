@@ -10,7 +10,7 @@ router.all('/', (req, res) => {
 
     let shop = (req.query.shop || req.body.shop || '').trim();
     let limit = Number(req.query.limit || req.body.limit);
-    limit = !Number.isNaN(limit) ? limit : 1;
+    limit = !Number.isNaN(limit) ? limit : 10;
     let page = Number(req.query.page || req.body.page);
     page = !Number.isNaN(page) ? page : 1;
     let pages = 0;
