@@ -75,7 +75,8 @@ router.post('/reg', (req, res) => {
 
         res.json({
             _id: newUser._id,
-            username: newUser.username
+            username: newUser.username,
+            avatar: newUser.avatar || '/public/images/avatar.jpg'
         });
     } )
     .catch(function(err) {
@@ -127,7 +128,8 @@ router.post('/login', (req, res) => {
 
         res.json({
             _id: user._id,
-            username: user.username
+            username: user.username,
+            avatar: newUser.avatar || '/public/images/avatar.jpg'
         });
     } )
     .catch(function(err) {
