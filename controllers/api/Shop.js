@@ -4,9 +4,38 @@ const router = express.Router();
 const ShopModel = require('../../schema/Shop');
 
 /**
- * 获取商家
+ * 获取指定商家的信息
+ * @type {[type]}
  */
 router.all('/', (req, res) => {
+    let id = Number(req.query.id || req.body.id);
+
+    ShopModel.findById(id)
+    .then( shop => {
+        if (!shop) {
+            return Promise.reject({
+                code: 1,
+                message: '不存在该商家信息'
+            });
+        }
+        return res.json(shop);
+    } )
+    .catch(function(err) {
+        if (err && err.code) {
+            res.json(err);
+        } else {
+            res.json({
+                code: -1,
+                message: '未知错误'
+            });
+        }
+    });
+});
+
+/**
+ * 获取商家列表
+ */
+router.all('/list', (req, res) => {
 
     let limit = Number(req.query.limit || req.body.limit);
     limit = !Number.isNaN(limit) ? limit : 10;

@@ -6,7 +6,7 @@ const GoodsModel = require('../../schema/Goods');
 /**
  * 获取商家
  */
-router.all('/', (req, res) => {
+router.all('/list', (req, res) => {
 
     let shop = (req.query.shop || req.body.shop || '').trim();
     let limit = Number(req.query.limit || req.body.limit);
