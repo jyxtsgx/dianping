@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const GoodsModel = require('../../schema/Goods');
+const RecommendModel = require('../../schema/Recommend');
 
 /**
  * 获取商家
@@ -58,6 +59,66 @@ router.all('/list', (req, res) => {
         });
     })
 
+});
+
+/**
+ * 推荐
+ * @type {[type]}
+ */
+router.all('/recommend', (req, res) => {
+    let id = Number(req.query.id || req.body.id);
+
+    if (!req.userInfo._id) {
+        res.json({
+            code: 10,
+            message: '你还没有登录'
+        });
+        return;
+    }
+
+    if (!id) {
+        res.json({
+            code: 1,
+            message: '请传入要推荐的商品ID'
+        });
+    }
+
+    RecommendModel.findOne({
+        goods: id,
+        user: req.userInfo._id
+    })
+    .then( recommend => {
+        if (recommend) {
+            return Promise.reject({
+                code: 2,
+                message: '你已经推荐该商品了，请不要重复推荐'
+            });
+        }
+        let recommend = new RecommendModel({
+            goods: id,
+            user: req.userInfo._id
+        });
+        return recommend.save();
+    } )
+    .then( recommend => {
+        if (!recommend) {
+            return Promise.reject({
+                code: 3,
+                message: '推荐失败'
+            })
+        }
+        res.json(recommend);
+    } )
+    .catch(function(err) {
+        if (err && err.code) {
+            res.json(err);
+        } else {
+            res.json({
+                code: -1,
+                message: '未知错误'
+            });
+        }
+    });
 });
 
 module.exports = router;

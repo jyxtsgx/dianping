@@ -21,6 +21,7 @@ router.all('/', (req, res) => {
 router.post('/add', (req, res) => {
     let name = (req.body.name || '').trim();
     let shop = (req.body.shop || '').trim();
+    let price = (req.body.price || 0.00);
 
     if (!name || !shop) {
         res.json({
@@ -30,16 +31,24 @@ router.post('/add', (req, res) => {
         return;
     }
 
+    if (Number.isNaN(price)) {
+        res.json({
+            code: 2,
+            message: '请输入正确的价格参数'
+        });
+        return;
+    }
+
     ShopModel.findById(shop)
     .then( shop => {
         if (!shop) {
             return Promise.reject({
-                code: 2,
+                code: 3,
                 message: '不存在的商家'
             })
         } else {
             let goods = new GoodsModel({
-                name,shop
+                name,shop,price
             });
             return goods.save();
         }
@@ -47,7 +56,7 @@ router.post('/add', (req, res) => {
     .then((newGoods) => {
         if (!newGoods) {
             return Promise.reject({
-                code: 3,
+                code: 4,
                 message: '添加失败'
             });
         }
@@ -72,6 +81,7 @@ router.post('/edit', (req, res) => {
     let id = req.body.id;
     let name = (req.body.name || '').trim();
     let shop = (req.body.shop || '').trim();
+    let price = (req.body.price || 0.00);
 
     if (!name || !shop) {
         res.json({
@@ -81,23 +91,32 @@ router.post('/edit', (req, res) => {
         return;
     }
 
+    if (Number.isNaN(price)) {
+        res.json({
+            code: 2,
+            message: '请输入正确的价格参数'
+        });
+        return;
+    }
+
     GoodsModel.findById(id)
     .then( goods => {
         if (!goods) {
             return Promise.reject({
-                code: 2,
+                code: 3,
                 message: '指定商品不存在'
             });
         }
         goods.name = name;
         goods.shop = shop;
+        goods.price = price;
 
         return goods.save();
     } )
     .then( newGoods => {
         if (!newGoods) {
             return Promise.reject({
-                code: 3,
+                code: 4,
                 message: '更新失败'
             });
         }

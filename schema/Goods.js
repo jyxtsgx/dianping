@@ -11,7 +11,12 @@ const GoodsSchema = new Schema({
         ref: 'Shop'
     },
     // 封面
-    cover: String
+    cover: String,
+    // 价格
+    price: {
+        type: Number,
+        default: 0.00
+    }
 
 });
 
