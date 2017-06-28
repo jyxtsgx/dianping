@@ -306,13 +306,13 @@ router.post('/profile/edit', (req, res) => {
     let birthday = (req.body.birthday || '').trim();
     let shippingAddress = (req.body.shippingAddress || '').trim();
 
-    if (!req.userInfo._id) {
-        res.json({
-            code: 10,
-            message: '你还没有登录'
-        });
-        return;
-    }
+    // if (!req.userInfo._id) {
+    //     res.json({
+    //         code: 10,
+    //         message: '你还没有登录'
+    //     });
+    //     return;
+    // }
 
     if (!'男,女,保密'.split(',').includes(gender)) {
         gender = '保密';
