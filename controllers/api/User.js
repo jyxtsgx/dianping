@@ -302,9 +302,9 @@ router.all('/profile', (req, res) => {
  * 修改用户资料
  */
 router.post('/profile/edit', (req, res) => {
-    let gender = (req.body.gender || '').trim();
-    let birthday = (req.body.birthday || '').trim();
-    let shippingAddress = (req.body.shippingAddress || '').trim();
+    let gender = req.body.gender;
+    let birthday = req.body.birthday;
+    let shippingAddress = req.body.shippingAddress;
 
     if (!req.userInfo._id) {
         res.json({
@@ -314,8 +314,13 @@ router.post('/profile/edit', (req, res) => {
         return;
     }
 
-    if (!'男,女,保密'.split(',').includes(gender)) {
-        gender = '保密';
+    let data = {};
+
+    if (gender) {
+        if (!'男,女,保密'.split(',').includes(gender)) {
+            gender = '保密';
+        }
+        data.gender = gender;
     }
 
     if (birthday) {
@@ -327,34 +332,24 @@ router.post('/profile/edit', (req, res) => {
             });
             return;
         }
+        data.birthday = birthday;
     }
 
-    ProfileModel.findOne({
+    if (shippingAddress) {
+        data.shippingAddress = shippingAddress;
+    }
+
+    ProfileModel.update({
         user: req.userInfo._id
-    })
+    }, data, {upsert: true})
     .then( profile => {
+        console.log(profile);
         if (!profile) {
-            profile = new ProfileModel({
-                user: req.userInfo._id,
-                gender,
-                birthday,
-                shippingAddress
-            });
-        } else {
-            profile.gender = gender;
-            profile.birthday = birthday;
-            profile.shippingAddress = shippingAddress;
-        }
-        return profile.save();
-    } )
-    .then( newProfile => {
-        if (!newProfile) {
             return Promise.reject({
                 code: 2,
                 message: '修改失败'
             });
         }
-        res.json(newProfile);
     } )
     .catch((err) => {
         if (err && err.code) {
