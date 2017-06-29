@@ -342,14 +342,16 @@ router.post('/profile/edit', (req, res) => {
     ProfileModel.update({
         user: req.userInfo._id
     }, data, {upsert: true})
-    .then( profile => {
-        console.log(profile);
-        if (!profile) {
+    .then( result => {
+        if (!result.ok) {
             return Promise.reject({
                 code: 2,
                 message: '修改失败'
             });
         }
+        res.json({
+            count: result.ok
+        });
     } )
     .catch((err) => {
         if (err && err.code) {
