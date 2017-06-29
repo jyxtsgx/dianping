@@ -283,9 +283,24 @@ router.all('/profile', (req, res) => {
                 code: 1,
                 message: '不存在该用户信息'
             });
+            return ProfileModel.update({
+                user: req.userInfo._id
+            }, {
+                user: req.userInfo._id
+            }, {upsert: true})
         }
         res.json(profile);
     } )
+    .then( result => {
+        if (result.ok) {
+            res.json({user: req.userInfo._id});
+        } else {
+            return Promise.reject({
+                code: 2,
+                message: '获取用户信息失败'
+            });
+        }
+    })
     .catch((err) => {
         if (err && err.code) {
             res.json(err);
@@ -306,6 +321,8 @@ router.post('/profile/edit', (req, res) => {
     let birthday = req.body.birthday;
     let shippingAddress = req.body.shippingAddress;
 
+    let data = {};
+
     if (!req.userInfo._id) {
         res.json({
             code: 10,
@@ -314,7 +331,7 @@ router.post('/profile/edit', (req, res) => {
         return;
     }
 
-    let data = {};
+    data.user = req.userInfo._id;
 
     if (gender) {
         if (!'男,女,保密'.split(',').includes(gender)) {
@@ -349,9 +366,10 @@ router.post('/profile/edit', (req, res) => {
                 message: '修改失败'
             });
         }
-        res.json({
-            count: result.ok
-        });
+        return ProfileModel.findOne({user: req.userInfo._id});
+    } )
+    .then( profile => {
+        return res.json(profile);
     } )
     .catch((err) => {
         if (err && err.code) {
