@@ -279,10 +279,6 @@ router.all('/profile', (req, res) => {
     })
     .then( profile => {
         if (!profile) {
-            return Promise.reject({
-                code: 1,
-                message: '不存在该用户信息'
-            });
             return ProfileModel.update({
                 user: req.userInfo._id
             }, {
