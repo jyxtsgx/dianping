@@ -282,14 +282,22 @@ router.all('/profile', (req, res) => {
             return ProfileModel.update({
                 user: req.userInfo._id
             }, {
-                user: req.userInfo._id
+                user: req.userInfo._id,
+                gender: '保密',
+                birthday: '',
+                shippingAddress: ''
             }, {upsert: true})
         }
         res.json(profile);
     } )
     .then( result => {
         if (result.ok) {
-            res.json({user: req.userInfo._id});
+            res.json({
+                user: req.userInfo._id,
+                gender: '保密',
+                birthday: '',
+                shippingAddress: ''
+            });
         } else {
             return Promise.reject({
                 code: 2,
