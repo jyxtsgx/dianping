@@ -10,13 +10,14 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 
-const userRouter = require('./controllers/api/User');
+const UserRouter = require('./controllers/api/User');
 const ShopTypeRouter = require('./controllers/api/ShopType');
 const ShopRouter = require('./controllers/api/Shop');
 
-const shopTypeRouter = require('./controllers/admin/ShopType');
-const shopRouter = require('./controllers/admin/Shop');
-const goodsRouter = require('./controllers/admin/Goods');
+const AdminShopTypeRouter = require('./controllers/admin/ShopType');
+const AdminShopRouter = require('./controllers/admin/Shop');
+const AdminGoodsRouter = require('./controllers/admin/Goods');
+const AdminUserRouter = require('./controllers/admin/User');
 
 app.use('/public', express.static('./public'));
 
@@ -39,13 +40,14 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/api/user', userRouter);
-app.use('/api/shoptype', shopTypeRouter);
+app.use('/api/user', UserRouter);
+app.use('/api/shoptype', ShopTypeRouter);
 app.use('/api/shop', ShopRouter);
 
-app.use('/admin/shoptype', shopTypeRouter);
-app.use('/admin/shop', shopRouter);
-app.use('/admin/goods', goodsRouter);
+app.use('/admin/shoptype', AdminShopTypeRouter);
+app.use('/admin/shop', AdminShopRouter);
+app.use('/admin/goods', AdminGoodsRouter);
+app.use('/admin/user', AdminUserRouter);
 
 app.listen(8888, function () {
     console.log('服务器启动成功');
