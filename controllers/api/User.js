@@ -298,6 +298,7 @@ router.all('/profile', (req, res) => {
                 birthday: '',
                 shippingAddress: ''
             });
+            res.end();
         } else {
             return Promise.reject({
                 code: 2,
