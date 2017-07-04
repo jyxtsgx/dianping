@@ -9,7 +9,7 @@ const FavoritesModel = require('../../schema/Favorites');
  * @type {[type]}
  */
 router.all('/', (req, res) => {
-    let id = Number(req.query.id || req.body.id);
+    let id = (req.query.id || req.body.id || '').trim();
 
     ShopModel.findById(id)
     .then( shop => {

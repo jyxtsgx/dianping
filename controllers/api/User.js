@@ -291,7 +291,7 @@ router.all('/profile', (req, res) => {
         res.json(profile);
     } )
     .then( result => {
-        if (result.ok) {
+        if (result) {
             res.json({
                 user: req.userInfo._id,
                 gender: '保密',
