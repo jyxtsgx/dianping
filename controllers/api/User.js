@@ -365,7 +365,7 @@ router.post('/profile/edit', (req, res) => {
         user: req.userInfo._id
     }, data, {upsert: true})
     .then( result => {
-        if (!result.ok) {
+        if (!result) {
             return Promise.reject({
                 code: 2,
                 message: '修改失败'
