@@ -6,7 +6,7 @@ const EvaluationShema = new Schema({
     shopId: {
         type: Schema.Types.ObjectId,
         ref: 'Shop'
-    }，
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User'

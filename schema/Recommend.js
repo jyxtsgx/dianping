@@ -11,7 +11,7 @@ const RecommendSchema = new Schema({
     goods: {
         type: Schema.Types.ObjectId,
         ref: 'Goods'
-    }，
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User'

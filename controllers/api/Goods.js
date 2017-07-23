@@ -40,7 +40,7 @@ router.all('/list', (req, res) => {
         page = Math.max(page, 1);
         page = Math.min(page, pages);
         let skip = limit * (page - 1);
-        return GoodsModel.where(where).find().limit(limit).skip(skip);
+        return GoodsModel.where(where).find().limit(limit).skip(skip).populate('shop');
     })
     .then( shop => {
         res.json({

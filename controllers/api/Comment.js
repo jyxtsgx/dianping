@@ -9,7 +9,49 @@ const ShopModel = require('../../schema/Shop');
  * @type {[type]}
  */
 router.all('/', (req, res) => {
+	let shopid = (req.body.shopid || '').trim();
+	let limit = Number(req.query.limit || req.body.limit);
+	limit = !Number.isNaN(limit) ? limit : 10;
+	let page = Number(req.query.page || req.body.page);
+	page = !Number.isNaN(page) ? page : 1;
+	let pages = 0;
+	let where = {};
 
+	if (!shopid) {
+		res.json({
+			code: 1,
+			message: '请传入评论的商家id'
+		});
+		return;
+	}
+
+	CommentModel.where(where).count()
+		.then(count => {
+			if (!count) {
+				return Promise.reject();
+			}
+			pages = Math.ceil(count / limit);
+			page = Math.max(page, 1);
+			page = Math.min(page, pages);
+			let skip = limit * (page - 1);
+			return CommentModel.where(where).find().limit(limit).skip(skip).populate('user', 'username');
+		})
+		.then( comment => {
+			res.json({
+				limit,
+				pages,
+				page,
+				data: comment
+			});
+		})
+		.catch(err => {
+			res.json({
+				limit,
+				pages: 0,
+				page,
+				data: []
+			});
+		})
 });
 
 /**
@@ -18,7 +60,6 @@ router.all('/', (req, res) => {
  */
 router.post('/post', (req, res) => {
     let shopid = (req.body.shopid || '').trim();
-    let userid = (req.body.userid || '').trim();
     let content = (req.body.content || '').trim();
     let scoreTaste = Number(req.body.score_taste) || 0;
     let scoreEnvironment = Number(req.body.score_environment) || 0;
@@ -62,6 +103,27 @@ router.post('/post', (req, res) => {
                 code: 4,
                 message: '不存在该商家信息'
             });
+        }
+        let comment = new CommentModel({
+			shop: shopid,
+            user: req.userInfo._id,
+            content: content,
+			score: {
+				taste: scoreTaste,
+				environment: scoreEnvironment,
+				service: scoreService
+            }
+        });
+        return comment.save();
+    } )
+    .then( comment => {
+        if (!comment) {
+            return Promise.reject({
+                code: 5,
+                message: '评论失败'
+            });
+        } else {
+            return comment;
         }
     } )
     .catch(function(err) {
